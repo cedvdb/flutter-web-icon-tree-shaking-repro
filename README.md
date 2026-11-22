@@ -114,6 +114,24 @@ unused packages/icon_fonts/UnusedIcons    1645184
 FontManifest still lists the unused family.
 ```
 
+It ships whole on Android too — there is no pragma here, so nothing records a
+use for the second family on either target:
+
+```
+$ flutter build apk --release
+Font asset "used.otf" was tree-shaken, reducing it from 1645184 to 1040 bytes
+                                    ← unused.otf never mentioned
+
+$ unzip -l build/app/outputs/flutter-apk/app-release.apk | grep otf
+  1645184  assets/flutter_assets/packages/icon_fonts/fonts/unused.otf
+     1040  assets/flutter_assets/packages/icon_fonts/fonts/used.otf
+```
+
+So the base rule is target-independent: a declared icon family with no recorded
+uses is copied verbatim and stays in `FontManifest.json`. What differs between
+targets is whether a package can force a use — see the pragma case above, where
+Android honours the forcing and web does not.
+
 ## Run it
 
 ```bash
