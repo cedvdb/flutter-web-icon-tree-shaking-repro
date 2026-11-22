@@ -79,6 +79,24 @@ references; web does not. So the difference is in what the web compile records,
 not in what the shaker decides — no "should we drop unused families" policy
 change is implied.
 
+## How I checked the two families are really not shaken
+
+Five signals, all from the same clone:
+
+1. **The flag ran in that build.** `MaterialSymbolsOutlined.ttf` is rewritten in
+   it (10,643,396 → 3,760), as is `MaterialIcons-Regular.otf`.
+2. **The tool logs one line per font it subsets**, and prints none for Rounded
+   or Sharp.
+3. **The shipped files are untouched.** `sha256` of
+   `build/web/assets/packages/material_symbols_icons/lib/fonts/MaterialSymbolsRounded.ttf`
+   and `...Sharp.ttf` equals the package's own files in `~/.pub-cache`.
+4. **Control.** With `--no-tree-shake-icons` all three ship full and no line is
+   printed, so the sizes above come from the shaker, not from a flag that never
+   took effect.
+5. **Same package, other target.** `flutter build apk --release` subsets the same
+   two families to 2,608 and 2,380 bytes, so those files are subsettable — the
+   web compile simply never records the pragma'd references.
+
 ## `local_package/` — the self-contained case
 
 Same symptom with no third-party code: a path package declares two icon font
