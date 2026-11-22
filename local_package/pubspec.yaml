@@ -1,0 +1,22 @@
+name: unused_icon_font_repro
+description: "Minimal repro: an unused icon font family from a package is not tree-shaken."
+publish_to: "none"
+version: 1.0.0
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  icon_fonts:
+    path: icon_fonts
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

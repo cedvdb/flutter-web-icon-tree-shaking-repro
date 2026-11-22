@@ -1,0 +1,21 @@
+name: material_symbols_unused_family
+description: "Minimal repro: an unused Material Symbols font family is not tree-shaken on web."
+publish_to: "none"
+version: 1.0.0
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  material_symbols_icons: ^4.2960.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true

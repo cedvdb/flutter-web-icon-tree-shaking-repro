@@ -1,0 +1,21 @@
+name: icon_fonts
+description: Two icon font families, side by side, to show one being kept without being used.
+publish_to: "none"
+version: 1.0.0
+
+environment:
+  sdk: ^3.14.0
+  flutter: ">=3.50.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  fonts:
+    - family: UsedIcons
+      fonts:
+        - asset: fonts/used.otf
+    - family: UnusedIcons
+      fonts:
+        - asset: fonts/unused.otf
