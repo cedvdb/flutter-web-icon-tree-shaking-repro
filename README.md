@@ -97,6 +97,32 @@ Five signals, all from the same clone:
    two families to 2,608 and 2,380 bytes, so those files are subsettable — the
    web compile simply never records the pragma'd references.
 
+## Workaround (tested)
+
+Reference **one icon per family from the widget tree**; the shaker records the
+family and subsets it to that glyph, and `Offstage` keeps it out of paint, layout,
+hit-testing and semantics (`RenderOffstage.visitChildrenForSemantics` returns early).
+
+```dart
+Icon(Symbols.star),
+Offstage(child: Icon(Symbols.star_rounded)),
+Offstage(child: Icon(Symbols.star_sharp)),
+```
+
+```
+Outlined  10,643,396 →  3,760
+Rounded   15,073,408 →  5,192
+Sharp      8,841,308 →  3,736
+```
+
+What does **not** work on web (both tested):
+
+- calling the package's `Symbols.forceCompileTimeTreeShaking()` — its
+  `const IconData`s are dead locals of a method nothing reads, so the web compiler
+  drops them before the recording;
+- drawing fewer families: every declared family that nothing references still
+  ships whole, so using one family leaves the other two at 23.4 MB.
+
 ## `local_package/` — the self-contained case
 
 Same symptom with no third-party code: a path package declares two icon font
